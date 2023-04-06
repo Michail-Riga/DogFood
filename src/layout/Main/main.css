@@ -4,3 +4,8 @@ img{
     color: rgba(137, 43, 226, 0.308);
     border-radius: 10px;
 }
+button {
+    border: solid 2px;
+    border-radius: 5px;
+    background-color: green;
+}
