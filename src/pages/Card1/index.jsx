@@ -3,7 +3,7 @@ export const Card1 = ()=>{
         <>        
             <div className="d-flex justify-content-center pt-3 mb-5 btn btn-info">
                 <div>
-                    <h3>Хорошее угощение для вашей собаки</h3>
+                    <h1>Хорошее угощение для вашей собаки</h1>
            <img className src='https://react-learning.ru/image-compressed/4.jpg' alt="Ломтики крольчатины"></img>           
            <strong>"Ломтики крольчатины"</strong>
            <p>Вес 100г<br></br>

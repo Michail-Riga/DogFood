@@ -7,7 +7,8 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import { Home } from './pages/Home';
-import { SignIn } from './pages/Auth';
+import { SignIn } from './pages/SignIn';
+import { QueryClient, QueryClientProvider } from 'react-query';
 import { Catalog } from './pages/Catalog';
 import { News } from './pages/News';
 import {SignUp} from './pages/SignUp';
@@ -24,6 +25,10 @@ import { Card4 } from './pages/Card4';
 import { Card5 } from './pages/Card5';
 import { Generalcard } from './pages/Generalcard';
 import { Products } from './pages/Products';
+import { Provider } from 'react-redux';
+import {store} from './redux/store'
+import { UserMe } from './pages/UserMe';
+import { PrivateRoute } from './components/PrivateRoute'
 
 
 const router = createBrowserRouter([
@@ -103,14 +108,24 @@ const router = createBrowserRouter([
         path: "products",
         element: <Products />,
       },
+      {
+        path: 'userme',
+        element: <PrivateRoute><UserMe /></PrivateRoute>
+      }
     ]
   }
 ]);
 
+const queryClient = new QueryClient()
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
+    <Provider store={store}>
+    <QueryClientProvider client={queryClient}>
     <RouterProvider router={router} />
+    </QueryClientProvider>
+    </Provider>
   </React.StrictMode>
-)
+);
 
