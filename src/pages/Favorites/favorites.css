@@ -1,0 +1,8 @@
+.bank {
+    color: blue;
+    background-color:azure;
+    height: 100px;
+    width: 100%;
+    border:solid slateblue ;
+    border-radius: 3px;
+    }
