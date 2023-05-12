@@ -1,9 +1,10 @@
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import { Link, useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
-import { signInFetch } from '../../api/user';
+import { fetchAuth } from '../../api/user';
+import { toast } from 'react-toastify';
 import { useDispatch } from 'react-redux';
-import { setUpUser } from '../../redux/slices/userSlice';
+import { setNewUser } from '../../redux/slices/userSlice';
 import { useNoAuth } from '../../hooks/useNoAuth';
 import { useMutation } from 'react-query';
 import { TOKEN } from '../../utils/token';
@@ -13,14 +14,22 @@ export const SignIn = () => {
   const dispatch = useDispatch()
   useNoAuth()
 
+  const signInSchema = Yup.object().shape({
+    password: Yup.string()
+    .min(4, 'Пароль cлишком короткий!')
+    .max(10, 'Пароль cлишком длинный!')
+    .required('Обязательное поле'),
+    email: Yup.string().email('Некорректный email').required('Обязательное поле'),
+  });
+
   const initialValues = {
     password: "",
     email: "",
   }
 
-  const { mutateAsync, isError} = useMutation({
+  const { mutateAsync } = useMutation({
     mutationFn: async (values) => {
-      const res = await signInFetch(values)
+      const res = await fetchAuth(values)
       if (res.ok) {
         const responce = await res.json()
         return responce
@@ -29,15 +38,11 @@ export const SignIn = () => {
     }
   })
 
-  const signInSchema = Yup.object().shape({
-    password: Yup.string().required('Обязательное поле'),
-    email: Yup.string().email('Некорректный email').required('Обязательное поле'),
-  });
-
   const onSubmit = async (values) => {
-    const responce = await mutateAsync(values)
-    dispatch(setUpUser({ ...responce.data, token: responce.token }))            
+    const responce =  await mutateAsync(values)
+    dispatch(setNewUser({ ...responce.data, token: responce.token }))            
      localStorage.setItem(TOKEN, responce.token)
+     toast.success("Вы успешно авторизовались")
     return navigate('/products')
   }
 
@@ -47,8 +52,8 @@ export const SignIn = () => {
       <h1>Авторизация</h1>
       <Formik
         initialValues={initialValues}
+        onSubmit={onSubmit}
         validationSchema={signInSchema}                    
-        onSubmit={(values) => onSubmit(values)}
       >
         <Form>
           <div className='py-2'>
@@ -69,15 +74,12 @@ export const SignIn = () => {
           </div>
 
            <div className='py-3'>
-          <button type="submit">Submit</button>
+          <button type="submit">Войти</button>
           </div>
 
           <div className='py-2'>
           <p>Если вы не зарегистрированы, перейдите на страницу <Link to={'/signup'}>Регистрации</Link></p>
            </div>
-
-         {isError && <p className='error'>{isError}</p>}
-
         </Form>
       </Formik>
     </div>

@@ -1,17 +1,15 @@
 import React from 'react'
 import './header.css'
-import { useDispatch } from "react-redux"
-import { useNavigate } from "react-router-dom"
-import { cleanUser } from "../../redux/slices/userSlice";
+import { NavLink, useNavigate } from "react-router-dom"
+import { TOKEN } from '../../utils/token'
+import styles from './header.css'
 
 export const Header = () => {
-
-    const dispatch = useDispatch();
-  const navigate = useNavigate();
-
+  const navigate = useNavigate()
+  const token = localStorage.getItem(TOKEN)
 
     const handleExit = () => {
-        dispatch(cleanUser())
+        localStorage.removeItem(TOKEN)
         return navigate('/signin')
     }    
 
@@ -21,18 +19,23 @@ export const Header = () => {
         <div className="position-relative">        
     <img src="https://img5.cliparto.com/pic/s/200009/5440920-english-bulldog-vector-illustration.jpg"  alt=""></img>
     </div>
-    <div>
+    <div className={styles.logo}>
         <p>Элитный корм для собак</p>
-      <h5>DOG FOOD</h5>
+      <p><strong>DOG FOOD</strong></p>
       </div>
+      
+      <nav>
       <div className='position-relative'>
-      <p><a href='/signup'>Регистрация</a></p>
-      <p><a href='/signin'>Авторизация</a></p>
-      <a href='/home'>Главная</a> 
+      <p><NavLink to={'/signup'}>Регистрация</NavLink></p>
+      <p><NavLink to={'/signin'}>Авторизация</NavLink></p>
+      <p><NavLink to={'/home'}>Главная</NavLink></p>
+      <p><NavLink to={'/user'}>Пользователь</NavLink> </p>
         </div>
-        <div>               
-        <button onClick={handleExit}>Выход</button>
-        </div>
+        </nav>
+      
+        <button><a href='/cart' className="btn btn-info">Корзина</a></button>
+        <button><a href='/favorites' className="btn btn-info">Избранное</a></button>                      
+        {token && <button onClick={handleExit} className="btn btn-info">Выход</button>}
     </header> 
     )
 }

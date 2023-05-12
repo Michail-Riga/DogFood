@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import { App } from './App';
+import App  from './App';
 import {
   createBrowserRouter,
   RouterProvider,
@@ -18,18 +18,15 @@ import { Delivery } from './pages/Delivery';
 import { Questions } from './pages/Questions';
 import { Feedback } from './pages/Feedback';
 import { Contacts } from './pages/Contacts';
-import { Card1 } from './pages/Card1';
-import { Card2 } from './pages/Card2';
-import { Card3 } from './pages/Card3';
-import { Card4 } from './pages/Card4';
-import { Card5 } from './pages/Card5';
-import { Generalcard } from './pages/Generalcard';
 import { Products } from './pages/Products';
 import { Provider } from 'react-redux';
-import {store} from './redux/store'
-import { UserMe } from './pages/UserMe';
-import { PrivateRoute } from './components/PrivateRoute'
+import {store} from './redux/store';
+import { User } from './pages/User';
+import { CurrentProduct } from './pages/CurrentProduct';
+import { Cart } from './pages/Cart';
+import { Favorites } from './pages/Favorites'
 
+const queryClient = new QueryClient()
 
 const router = createBrowserRouter([
   {
@@ -38,85 +35,72 @@ const router = createBrowserRouter([
     children: [
       {                    
         path: "home",                          
-        element: <Home />,
+        element: <Home />
       },
       {
-        path: "signup",
-        element: <SignUp />,
+        path: "/signup",
+        element: <SignUp />
       },
       {
-        path: "signin",
-        element: <SignIn />,
+        path: "/signin",
+        element: <SignIn />
       },
       {
         path: "catalog",
-        element: <Catalog />,
+        element: <Catalog />
       },
       {
         path: "news",
-        element: <News />,
+        element: <News />
       },
       {
         path: "reviews",
-        element: <Reviews />,
+        element: <Reviews />
       },
       {
         path: "stock",
-        element: <Stock />,
+        element: <Stock />
       },
       {
         path: "delivery",
-        element: <Delivery />,
+        element: <Delivery />
       },
       {
         path: "questions",
-        element: <Questions />,
+        element: <Questions />
       },
       {
         path: "feedback",
-        element: <Feedback />,
+        element: <Feedback />
       },
       {
         path: "contacts",
-        element: <Contacts />,
-      },
-      {
-        path: "card1",
-        element: <Card1 />,
-      },
-      {
-        path: "card2",
-        element: <Card2 />,
-      },
-      {
-        path: "card3",
-        element: <Card3 />,
-      },
-      {
-        path: "card4",
-        element: <Card4 />,
-      },
-      {
-        path: "card5",
-        element: <Card5 />,
-      },
-      {
-        path: "generalcard",
-        element: <Generalcard />,
+        element: <Contacts />
       }, 
       {
         path: "products",
-        element: <Products />,
+        element: <Products />
       },
       {
-        path: 'userme',
-        element: <PrivateRoute><UserMe /></PrivateRoute>
-      }
-    ]
-  }
-]);
+        path: "user",
+        element: <User />
+      },
+      {
+        path: "product/:idOfProduct",
+         element: <CurrentProduct />
+       },
+       {
+        path: "cart",
+        element: <Cart />
+       },
+       {
+        path: "favorites",
+        element: <Favorites />
+       },
 
-const queryClient = new QueryClient()
+    ]
+  },
+]);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

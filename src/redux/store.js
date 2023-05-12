@@ -1,19 +1,15 @@
-import { configureStore } from "@reduxjs/toolkit";
-import { LC_NAMING, getInitialState } from './initialState'
-import { userReducer } from "./slices/userSlice";
-import { filterReducer } from "./slices/filterSlice";
+import { configureStore } from '@reduxjs/toolkit'
+import { getInitialData } from './initialValues'
+import { userReducer } from './slices/userSlice'
+import { REDUX_STATE_SUBSCR } from '../utils/token'
 
 export const store = configureStore({
   reducer: {
-    user: userReducer,
-    filter: filterReducer,
+    user: userReducer
   },
-  preloadedState: getInitialState()
+  preloadedState: getInitialData()
 })
-
-store.subscribe(() => {
-  localStorage.setItem(LC_NAMING, JSON.stringify(store.getState()))
-})
+store.subscribe(() => localStorage.setItem(REDUX_STATE_SUBSCR, JSON.stringify(store.getState())))
 
 
 
@@ -27,23 +23,3 @@ store.subscribe(() => {
 
 
 
-
-
-
-/*import { getInitState } from './initialState'
-import { configureStore } from "@reduxjs/toolkit";
-import { todosReducer } from './slices/todosSlice';
-import { counterReducer } from './slices/counterSlice';
-
-export const store = configureStore({
-  reducer: {
-    todos: todosReducer,
-    counter: counterReducer
-  },
-  preloadedState: getInitState(),
-  devTools: true, // по дефолту итак тру
-})
-
-store.subscribe(
-  () => localStorage.setItem('reduxState', JSON.stringify(store.getState()))
-)*/
