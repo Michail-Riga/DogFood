@@ -37,9 +37,10 @@ export const Main = () => {
         <main>
           
           <div className="d-flex justify-content-center"><p>ВЫ НЕ ВЫБРАЛИ ПОКА НИ ОДИН ТОВАР</p></div>
+          <p>Все интересующие Вас корма Вы можете выбрать в разделе "Каталог" или перейдя по ссылке "Выберите корм"</p>
           
           <div className="d-flex justify-content-center mb-5">
-           <button><a href ="/generalcard" type="button" className="btn btn-success">Выберите корм</a></button>
+           <button><a href ="/catalog" type="button" className="btn btn-success">Выберите корм</a></button>
            </div>
                    
                    <div className="d-flex justify-content-center">
