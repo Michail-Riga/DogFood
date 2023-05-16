@@ -1,55 +1,58 @@
-import { Formik, Field, Form, ErrorMessage } from 'formik';
-import { Link, useNavigate } from 'react-router-dom';
-import * as Yup from 'yup';
-import { fetchAuth } from '../../api/user';
-import { toast } from 'react-toastify';
-import { useDispatch } from 'react-redux';
-import { setNewUser } from '../../redux/slices/userSlice';
-import { useNoAuth } from '../../hooks/useNoAuth';
-import { useMutation } from 'react-query';
-import { TOKEN } from '../../utils/token';
-
-export const SignUp = () => {
-  const navigate = useNavigate()
-  const dispatch = useDispatch()
-  useNoAuth()
-
-  const signUpSchema = Yup.object().shape({
-    password: Yup.string()
-    .min(4, 'Пароль cлишком короткий!')
-    .max(10, 'Пароль cлишком длинный!')
-    .required('Обязательное поле'),
-    email: Yup.string().email('Некорректный email').required('Обязательное поле'),
-    group: Yup.string()
-      .min(4, 'min 5')
-      .max(8, 'max 10 ')
-      .required('Обязательное поле'),
-  });
-
-  const initialValues = {
-    email: "",
-    group: "",
-    password: "",
-  }
-
-  const { mutateAsync} = useMutation({
-    mutationFn: async (values) => {
-      const res = await fetchAuth(values)
-      if (res.ok) {
-        const responce = await res.json()
-        return responce
-      }
-  return false
+  import { Formik, Field, Form, ErrorMessage } from 'formik';
+  import * as Yup from 'yup';
+  import { Link, useNavigate } from 'react-router-dom';
+  import { fetchAuth, fetchReg } from '../../api/user';
+  import { toast } from 'react-toastify';
+  import { useNoAuth } from '../../hooks/useNoAuth';
+  import { useDispatch } from 'react-redux';
+  import { setNewUser } from '../../redux/slices/userSlice';
+  
+  export const SignUp = () => {
+    const navigate = useNavigate()
+    const dispatch = useDispatch()
+    useNoAuth()
+  
+    const signUpSchema = Yup.object().shape({
+      password: Yup.string()
+        .min(4, 'Пароль cлишком короткий!')
+        .max(10, 'Пароль cлишком длинный!')
+        .required('Обязательное поле'),
+      email: Yup.string().email('Некорректный email').required('Обязательное поле'),
+      group: Yup.string()
+        .min(4, 'min 4')
+        .max(8, 'max 8 ')
+        .required('Обязательное поле'),
+    });
+  
+    const initialValues = {
+      email: '',
+      password: '',
+      group: ''
     }
-  })
-
-  const onSubmit = async (values) => {
-    const responce =  await mutateAsync(values)
-    dispatch(setNewUser({ ...responce.data, token: responce.token }))            
-     localStorage.setItem(TOKEN, responce.token)
-     toast.success("Вы успешно зарегистрировались")
-    return navigate('/products')
-  }
+  
+    const onSubmit = async (values) => {
+      const resReg = await fetchReg(values)
+      const responceReg = await resReg.json()
+  
+      if (resReg.ok) {
+        const resAuth = await fetchAuth({ email: values.email, password: values.password })
+        const responceAuth = await resAuth.json()
+  
+        if (resAuth.ok) {
+          dispatch(setNewUser({
+            ...responceAuth.data,
+            token: responceAuth.token
+          }))
+          toast.success("Ваша регистрация прошла успешно")
+  
+          return navigate('/products')
+        }
+  
+        return toast.error(responceAuth.message)
+      }
+  
+      return toast.error(responceReg.message)
+    }
 
   return (
     <>

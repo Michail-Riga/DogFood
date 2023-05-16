@@ -5,6 +5,14 @@ export const fetchProducts = (token) => fetch('https://api.react-learning.ru/pro
   }
 })
 
+export const fetchProductsWithSearch = (token, search) =>
+  fetch(`https://api.react-learning.ru/products/search?query=${search}`, {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  })
+
 export const fetchCurrentProduct = (id, token) => fetch(`https://api.react-learning.ru/products/${id}`, {
   method: 'GET',
   headers: {
@@ -12,21 +20,18 @@ export const fetchCurrentProduct = (id, token) => fetch(`https://api.react-learn
   }
 })
 
-export const fetchCurrentProduct1 = async (id, token) => {
-  const res = await fetch(`https://api.react-learning.ru/products/${id}`, {
+export const fetchCartProducts = (token, cart) => Promise.allSettled(cart.map(
+  product => fetch(`https://api.react-learning.ru/products/${product._id}`, {
     method: 'GET',
     headers: {
       Authorization: `Bearer ${token}`
     }
-  })
+  }).then(res => res.json()).then(data => {
+    return { _id: product._id, data }
+  })))
 
-  if (res.ok) {
-  const responce = await res.json()
 
-  }
 
-  return false
-}
 
 
 

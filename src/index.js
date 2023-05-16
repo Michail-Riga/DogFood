@@ -6,7 +6,7 @@ import {
   createBrowserRouter,
   RouterProvider,
 } from "react-router-dom";
-import { Home } from './pages/Home';
+import { Home } from './pages/Home/index'
 import { SignIn } from './pages/SignIn';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { Catalog } from './pages/Catalog';
@@ -26,7 +26,13 @@ import { CurrentProduct } from './pages/CurrentProduct';
 import { Cart } from './pages/Cart';
 import { Favorites } from './pages/Favorites'
 
-const queryClient = new QueryClient()
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+    },
+  },
+})
 
 const router = createBrowserRouter([
   {
@@ -86,7 +92,7 @@ const router = createBrowserRouter([
         element: <User />
       },
       {
-        path: "product/:idOfProduct",
+        path: "products/:idOfProduct",
          element: <CurrentProduct />
        },
        {
@@ -97,7 +103,6 @@ const router = createBrowserRouter([
         path: "favorites",
         element: <Favorites />
        },
-
     ]
   },
 ]);

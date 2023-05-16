@@ -38,7 +38,6 @@ export const CurrentProduct = () => {
           {data.price}
           {data.discount}  
           {data.stock}
-          {data.img}
         </div>
       }
     </>

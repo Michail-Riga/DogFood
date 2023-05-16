@@ -26,7 +26,6 @@ export const SignIn = () => {
     password: "",
     email: "",
   }
-
   const { mutateAsync } = useMutation({
     mutationFn: async (values) => {
       const res = await fetchAuth(values)
@@ -42,7 +41,7 @@ export const SignIn = () => {
     const responce =  await mutateAsync(values)
     dispatch(setNewUser({ ...responce.data, token: responce.token }))            
      localStorage.setItem(TOKEN, responce.token)
-     toast.success("Вы успешно авторизовались")
+     toast.success("Вы успешно авторизованы")
     return navigate('/products')
   }
 

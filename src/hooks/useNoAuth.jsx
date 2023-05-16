@@ -7,6 +7,6 @@ export const useNoAuth = () => {
   const { token } = useSelector(state => state.user)
 
   useEffect(() => {
-    if (!token) navigate('/signin')
+    if (token) return navigate('/products')
   }, [navigate, token])
 }

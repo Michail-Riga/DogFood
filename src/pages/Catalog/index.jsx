@@ -25,7 +25,7 @@ export const Catalog = () => {
     }
     fetchData();
   }, [token]);
-  
+
     return (
       
         <div className="btn btn-info">
@@ -35,18 +35,13 @@ export const Catalog = () => {
                 <h2>Всего продуктов:{data.total}</h2>
                 
                 <div className="products_wrapper py-3">
-                
-                    {data.products.map(product => {
-                      
-                        return <p><ProductCard key={product._id} product={product} /></p>
-                        
-                    })}
-                    
-
+                {data.products.map(product => {
+          return <ProductCard key={product._id} product={product} />
+        })}
                 </div>
                 <p><strong>*НЕ ЗАБУДЬТЕ КУПИТЬ ЭЛИТНЫЙ КОРМ ДЛЯ СВОЕЙ СОБАКИ.*</strong></p>
                 </div>
-                </div> 
+                </div>      
     )
  }
 

@@ -1,17 +1,21 @@
-import React from 'react'
-import './header.css'
-import { NavLink, useNavigate } from "react-router-dom"
-import { TOKEN } from '../../utils/token'
 import styles from './header.css'
+import { Search } from '../../components/Search'
+import { NavLink, useNavigate } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import { clearUser } from '../../redux/slices/userSlice'
 
 export const Header = () => {
   const navigate = useNavigate()
-  const token = localStorage.getItem(TOKEN)
+  const dispatch = useDispatch()
+  const { token } = useSelector(state => state.user)
+  const cart = useSelector(state => state.cart)
+  const favorites = useSelector(state => state.favorites)
 
-    const handleExit = () => {
-        localStorage.removeItem(TOKEN)
-        return navigate('/signin')
-    }    
+  const handleExit = () => {
+    dispatch(clearUser())
+
+    return navigate('/signin')
+  }
 
     return (
          
@@ -22,8 +26,7 @@ export const Header = () => {
     <div className={styles.logo}>
         <p>Элитный корм для собак</p>
       <p><strong>DOG FOOD</strong></p>
-      </div>
-      
+      </div>           
       <nav>
       <div className='position-relative'>
       <p><NavLink to={'/signup'}>Регистрация</NavLink></p>
@@ -32,10 +35,20 @@ export const Header = () => {
       <p><NavLink to={'/user'}>Пользователь</NavLink> </p>
         </div>
         </nav>
-      
-        <button><a href='/cart' className="btn btn-info">Корзина</a></button>
-        <button><a href='/favorites' className="btn btn-info">Избранное</a></button>                      
+
+<NavLink to={"/cart"}>
+          Корзина {!!cart.length && `(${cart.length})`}
+        </NavLink>
+        
+        <NavLink to={"/favorites"}>
+          Избранное {!!favorites.length && `(${favorites.length})`}
+        </NavLink>
+<div className='wanted'>
+       <p>{token && <Search />}</p>
+       <div className='py-5'>
         {token && <button onClick={handleExit} className="btn btn-info">Выход</button>}
+        </div>
+        </div>
     </header> 
     )
 }

@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { initialData } from "../initialValues";
+import { REDUX_STATE_SUBSCR } from "../../utils/token";
 
 const userSlice = createSlice({
   name: 'user',
@@ -9,6 +10,7 @@ const userSlice = createSlice({
       return action.payload
     },
     clearUser() {
+      localStorage.removeItem(REDUX_STATE_SUBSCR)
       return initialData.user
     }
   }

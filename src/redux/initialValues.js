@@ -8,7 +8,6 @@ export const initialData = {
   cart: [],
   favorites: [],
 }
-
 export const getInitialData = () => {
 const localStorageData = localStorage.getItem(REDUX_STATE_SUBSCR)
 return localStorageData ? JSON.parse(localStorageData) : initialData
